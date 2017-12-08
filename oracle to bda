@@ -1,0 +1,17 @@
+SQOOP IMPORT DATA FROM ORACLE:
+
+sqoop import -D mapred.job.name='Adhoc Import request 12' --connect jdbc:oracle:thin:@'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=)(PORT=))(CONNECT_DATA=(SERVER = DEDICATED)(SERVICE_NAME=)))' --username ADDHERE --password ADDHERE --query "SELECT STATEMENT_WITH_WHERE_CLAUSE WHERE \$CONDITIONS AND rownum <2000001" --split-by SVC --as-textfile --delete-target-dir --target-dir /test -m 1
+
+
+sqoop import -D mapred.job.name='Adhoc Import request 12' --connect jdbc:oracle:thin:@'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=)(PORT=))(CONNECT_DATA=(SERVER = DEDICATED)(SERVICE_NAME=)))' --username ADDHERE --password ADDHERE --table ADD_TABLE_NAME_TO_SELECT_ALL --split-by SVC --as-textfile --delete-target-dir --target-dir /test -m 1
+
+TABLE AND QUERY MUST BE UPPER CASE
+-m is number maps, upto 100
+
+ONCE SQOOP COMPLETES, RUN THIS TO COPY TO LOCAL
+hadoop fs -copyToLocal /test /home/s-ict/
+
+ONCE COPIED TO LOCAL, EXIT BDA AND RUN FROM TERMINAL
+scp EDGE_NODE_SERVER_NAME://home/s-ict/test/part-m-00000 Documents/
+
+THE Documents/ is the file path where the file will land on local machine
